@@ -3,7 +3,8 @@ require 'rubygems'
 require 'tinder'
 require 'yaml'
 
-def monitor_room(room, sticky = nil)
+def monitor_room(room, config = {})
+  sticky = config[:sticky]
   room.listen do |m|
     # Ignore any pings from campfire to determine if I'm still
     # here
@@ -35,8 +36,8 @@ account_names.each do |account_name|
     rooms.keys.each do |room_name|
       room = campfire.find_room_by_name room_name
       if room
-        threads << Thread.new(room, rooms[room_name][:sticky]) do |r, rx|
-          monitor_room(r, rx)
+        threads << Thread.new(room, rooms[room_name]) do |r, cfg|
+          monitor_room(r, cfg)
         end
       end
     end
