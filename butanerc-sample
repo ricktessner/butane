@@ -1,0 +1,9 @@
+--- 
+mycampfire: 
+  :login: rick@email.com
+  :password: mypassword
+  :rooms: 
+    First Room: 
+      :monitor: rick
+    Git Commits: 
+      :monitor: models|specs
