@@ -4,6 +4,6 @@ mycampfire:
   :password: mypassword
   :rooms: 
     First Room: 
-      :monitor: rick
+      :sticky: rick
     Git Commits: 
-      :monitor: models|specs
+      :sticky: models|specs
