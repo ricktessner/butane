@@ -70,7 +70,15 @@ will again cause a sticky notification to appear.
 
 === Run it
 
-butane.rb &
++butane start+ to start butane as a daemon.
 
-If it can't login to an account, that will be shown on stdout.  If a room
-cannot be found, that will also be shown on stdout.
++butane run+ to start it attached to the console.
+
++butane retarts+ will stop and restart the butane daemon.
+
++butane stop+ to stop butane.
+
++butane status+ to determine wether butane is running.
+
+Using +butane run+ is useful since it will show you on the console the accounts
+butane is trying to connect to and the rooms it will be monitoring.
