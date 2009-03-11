@@ -7,3 +7,10 @@ mycampfire:
       :sticky: rick
     Git Commits: 
       :sticky: models|specs
+
+otheraccount:
+  :login: rick@email.com
+  :password: someotherpassword
+  :rooms:
+    Light is Nice:
+      :sticky: rick

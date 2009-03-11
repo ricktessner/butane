@@ -1,0 +1,71 @@
+== Butane
+
+A nod to the Propane for mac which monitors Campfire rooms.  This is for Linux
+users.  It has been tested on Ubuntu 8.10 and should work on Debian based
+systems just fine.
+
+=== Requirements
+
+ * Ubuntu 8.10 (or later, I'd assume)
+ * the tinder gem (1.2.0):  sudo gem install tinder
+ * libnotify-bin: sudo apt-get install libnotify-bin
+
+I use the Gnome desktop and I'm not sure about the requirements for
+libnotify-bin above.
+
+=== To Dos
+
+ * Package as a gem although it is pretty specific to linux and possibly the
+   gnome desktop as well.
+ * Add :ignore: regex to ignore certain patterns on a per-room basis
+ * Daemonize.
+
+=== Configuration of the .butanerc
+
+Create a .butanerc in your home directory.  It's in yaml format and here's what
+it looks like:
+
+    --- 
+    mycampfire: 
+      :login: rick@email.com
+      :password: mypassword
+      :rooms: 
+        First Room: 
+          :sticky: rick
+        Git Commits: 
+          :sticky: models|specs
+
+    otheraccount:
+      :login: rick@email.com
+      :password: someotherpassword
+      :rooms:
+        Light is Nice:
+          :sticky: rick
+
+    
+Fixed keywords in the above:
+
+ * :login:
+ * :password:
+ * :rooms:
+ * :sticky:
+
+The rest of the items, "mycampfire", "otheraccount", "First Room" and "Git
+Commits", "Light is Nice" are the names of your accounts and rooms in those
+account.
+
+As you've guessed by now, it does work with multiple campfire accounts.
+
+There is the "First Room".  Any activity that regexp matches /rick/i will pop
+up a sticky notification that needs to be clicked away.  Ditto for the "Light
+is Nice" room.
+    
+In the "Git Commits" room, any activity that matches the regexp /models|specs/i
+will again cause a sticky notification to appear.
+
+=== Run it
+
+butane.rb &
+
+If it can't login to an account, that will be shown on stdout.  If a room
+cannot be found, that will also be shown on stdout.
