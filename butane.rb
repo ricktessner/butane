@@ -21,7 +21,14 @@ def monitor_room(room, config = {})
 
     img_opt = "-i #{config[:image]}" if config[:image]
 
-    `notify-send -t #{delay} #{img_opt} \"#{m[:person]}\n#{m[:message]}\"`
+    msg = m[:message].dup
+    msg.gsub! '\u003E', '>'
+    msg.gsub! '\u003C', '<'
+    msg.gsub! '\u0026', '&'
+    msg.gsub! '\"', '"'
+    msg.gsub! '&hellip;', '...'   # notify-send don't like this
+
+    `notify-send -t #{delay} #{img_opt} \"#{m[:person]} in #{room.name}\" \"#{msg}\"`
   end
 end
 
