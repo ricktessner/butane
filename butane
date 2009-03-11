@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'daemons'
+require 'pathname'
+
+# The butane script itself will be in /usr/bin or some such place and is
+# symlinked back to the script in the gem. So, find the butane.rb script in
+# the gem and ...
+butane = File.join(File.dirname(Pathname.new($0).realpath), "butane.rb")
+
+# ... run it
+Daemons.run(butane)
