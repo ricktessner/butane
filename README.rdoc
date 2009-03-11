@@ -6,19 +6,17 @@ systems just fine.
 
 === Requirements
 
- * Ubuntu 8.10 (or later, I'd assume)
- * the tinder gem (1.2.0):  sudo gem install tinder
- * libnotify-bin: sudo apt-get install libnotify-bin
+* Ubuntu 8.10 (or later, I'd assume)
+* the tinder gem (1.2.0):  sudo gem install tinder
+* libnotify-bin: sudo apt-get install libnotify-bin
 
 I use the Gnome desktop and I'm not sure about the requirements for
 libnotify-bin above.
 
 === To Dos
 
- * Package as a gem although it is pretty specific to linux and possibly the
-   gnome desktop as well.
- * Add :ignore: regex to ignore certain patterns on a per-room basis
- * Daemonize.
+* Package as a gem although it is pretty specific to linux and possibly the gnome desktop as well.
+* Add :ignore: regex to ignore certain patterns on a per-room basis
 
 === Configuration of the .butanerc
 
@@ -47,11 +45,11 @@ it looks like:
     
 Fixed keywords in the above:
 
- * :login:
- * :password:
- * :image:
- * :rooms:
- * :sticky:
+* :login:
+* :password:
+* :image:
+* :rooms:
+* :sticky:
 
 The rest of the items, "mycampfire", "otheraccount", "First Room" and "Git
 Commits", "Light is Nice" are the names of your accounts and rooms in those
