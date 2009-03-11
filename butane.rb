@@ -31,14 +31,25 @@ account_names.each do |account_name|
   rooms = config[account_name][:rooms]
   if rooms && rooms.size > 0
     campfire = Tinder::Campfire.new account_name
-    campfire.login config[account_name][:login], config[account_name][:password]
+    begin
+      campfire.login config[account_name][:login], config[account_name][:password]
+    rescue Tinder::Error => e
+      puts "Problem logging in to #{account_name} : #{e.message}"
+      next
+    end
+    puts "Connected to #{account_name}"
+
     # Start up a thread for each room we are going to monitor
     rooms.keys.each do |room_name|
+      print "  Looking for room #{room_name} ... "
       room = campfire.find_room_by_name room_name
       if room
+        puts "  got it and monitoring."
         threads << Thread.new(room, rooms[room_name]) do |r, cfg|
           monitor_room(r, cfg)
         end
+      else
+        puts "  hmmm, didn't find it."
       end
     end
   end
