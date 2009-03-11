@@ -19,7 +19,9 @@ def monitor_room(room, config = {})
       delay = 0 if m[:message] =~ /#{sticky}/i
     end
 
-    `notify-send -t #{delay} -i /home/rick/Pictures/cf.gif \"#{m[:person]}\n#{m[:message]}\"`
+    img_opt = "-i #{config[:image]}" if config[:image]
+
+    `notify-send -t #{delay} #{img_opt} \"#{m[:person]}\n#{m[:message]}\"`
   end
 end
 
@@ -29,6 +31,7 @@ account_names = config.keys
 threads = []
 account_names.each do |account_name|
   rooms = config[account_name][:rooms]
+  account_img = config[account_name][:image]
   if rooms && rooms.size > 0
     campfire = Tinder::Campfire.new account_name
     begin
@@ -44,8 +47,10 @@ account_names.each do |account_name|
       print "  Looking for room #{room_name} ... "
       room = campfire.find_room_by_name room_name
       if room
+        room_cfg = rooms[room_name]
+        room_cfg[:image] ||= account_img
         puts "  got it and monitoring."
-        threads << Thread.new(room, rooms[room_name]) do |r, cfg|
+        threads << Thread.new(room, room_cfg) do |r, cfg|
           monitor_room(r, cfg)
         end
       else

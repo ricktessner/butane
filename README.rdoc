@@ -29,6 +29,7 @@ it looks like:
     mycampfire: 
       :login: rick@email.com
       :password: mypassword
+      :image: some_small_32x32_image
       :rooms: 
         First Room: 
           :sticky: rick
@@ -41,18 +42,24 @@ it looks like:
       :rooms:
         Light is Nice:
           :sticky: rick
+          :image: nice_light_32x32_image
 
     
 Fixed keywords in the above:
 
  * :login:
  * :password:
+ * :image:
  * :rooms:
  * :sticky:
 
 The rest of the items, "mycampfire", "otheraccount", "First Room" and "Git
 Commits", "Light is Nice" are the names of your accounts and rooms in those
-account.
+accounts.
+
+The :image: is used for a small 32x32 (or so) image that is used in the
+notification.  This can be done at the account level and/or the room level as
+well.  Any :image: defined for a room is used instead of the account image.
 
 As you've guessed by now, it does work with multiple campfire accounts.
 
