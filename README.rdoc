@@ -16,7 +16,6 @@ libnotify-bin above.
 === To Dos
 
 * Package as a gem although it is pretty specific to linux and possibly the gnome desktop as well.
-* Add :ignore: regex to ignore certain patterns on a per-room basis
 
 === Configuration of the .butanerc
 
@@ -41,6 +40,7 @@ it looks like:
         Light is Nice:
           :sticky: rick
           :image: nice_light_32x32_image
+          :ignore: has\s+(left|entered)
 
     
 Fixed keywords in the above:
@@ -50,10 +50,14 @@ Fixed keywords in the above:
 * :image:
 * :rooms:
 * :sticky:
+* :ignore:
 
 The rest of the items, "mycampfire", "otheraccount", "First Room" and "Git
 Commits", "Light is Nice" are the names of your accounts and rooms in those
 accounts.
+
+The :ignore: is used, on a per-room basis, to just flat out ignore messages
+that match that regexp.
 
 The :image: is used for a small 32x32 (or so) image that is used in the
 notification.  This can be done at the account level and/or the room level as

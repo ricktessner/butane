@@ -5,6 +5,7 @@ require 'yaml'
 
 def monitor_room(room, config = {})
   sticky = config[:sticky]
+  ignore = config[:ignore]
   room.listen do |m|
     # Ignore any pings from campfire to determine if I'm still
     # here
@@ -19,9 +20,20 @@ def monitor_room(room, config = {})
       delay = 0 if m[:message] =~ /#{sticky}/i
     end
 
+    if ignore
+      next if m[:message] =~ /#{ignore}/
+    end
+
     img_opt = "-i #{config[:image]}" if config[:image]
 
+    person = m[:person].dup
+    person.gsub! /"/, ''   # Get rid of any double quotes since we use 'em to delimit person
+
+    room_name = room.name
+    room_name.gsub! /"/, '' # Ditto
+
     msg = m[:message].dup
+    msg.gsub! /'/, ''       # Get rid of single quotes since we use 'em to delimit msg
     msg.gsub! '\u003E', '>'
     msg.gsub! '\u003C', '<'
     msg.gsub! '\u0026', '&'
@@ -32,7 +44,7 @@ def monitor_room(room, config = {})
     # in the msg.  Assumes that in href=stuff, stuff has no whitespace.
     msg.gsub! /<a[^>]+(href=[^\s]+)[^>]*>/, '<a \1>'
 
-    `notify-send -t #{delay} #{img_opt} \"#{m[:person]} in #{room.name}\" '#{msg}'`
+    `notify-send -t #{delay} #{img_opt} \"#{person} in #{room_name}\" '#{msg}'`
   end
 end
 
