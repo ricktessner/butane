@@ -6,6 +6,9 @@ require 'yaml'
 def monitor_room(room, config = {})
   sticky = config[:sticky]
   ignore = config[:ignore]
+
+  room_name = room.name.gsub /"/, '' # Get rid of any dquotes since we use 'em to delimit person
+
   room.listen do |m|
     # Ignore any pings from campfire to determine if I'm still
     # here
@@ -26,11 +29,7 @@ def monitor_room(room, config = {})
 
     img_opt = "-i #{config[:image]}" if config[:image]
 
-    person = m[:person].dup
-    person.gsub! /"/, ''   # Get rid of any double quotes since we use 'em to delimit person
-
-    room_name = room.name
-    room_name.gsub! /"/, '' # Ditto
+    person = m[:person].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
 
     msg = m[:message].dup
     msg.gsub! /'/, ''       # Get rid of single quotes since we use 'em to delimit msg
