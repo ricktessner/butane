@@ -6,7 +6,7 @@ systems just fine.
 
 === Requirements
 
-* Ubuntu 8.10 (or later, I'd assume)
+* Ubuntu 8.04 (or later, I'd assume)
 * the tinder gem (1.2.0):  sudo gem install tinder
 * libnotify-bin: sudo apt-get install libnotify-bin
 
@@ -78,7 +78,7 @@ will again cause a sticky notification to appear.
 
 +butane run+ to start it attached to the console.
 
-+butane retarts+ will stop and restart the butane daemon.
++butane restart+ will stop and restart the butane daemon.
 
 +butane stop+ to stop butane.
 
