@@ -69,7 +69,7 @@ account_names.each do |account_name|
       print "  Looking for room #{room_name} ... "
       room = campfire.find_room_by_name room_name
       if room
-        room_cfg = rooms[room_name]
+        room_cfg = rooms[room_name] || {}
         room_cfg[:image] ||= account_img
         puts "  got it and monitoring."
         threads << Thread.new(room, room_cfg) do |r, cfg|
