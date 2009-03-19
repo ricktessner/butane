@@ -41,7 +41,7 @@ def monitor_room(room, config = {})
 
     # And let's remove all but the href attribute in any anchors
     # in the msg.  Assumes that in href=stuff, stuff has no whitespace.
-    msg.gsub! /<a[^>]+(href=[^\s]+)[^>]*>/, '<a \1>'
+    msg.gsub! /<a[^>]+(href=[^(\s|>)]+)[^>]*>/, '<a \1>'
 
     `notify-send -t #{delay} #{img_opt} \"#{person} in #{room_name}\" '#{msg}'`
   end
