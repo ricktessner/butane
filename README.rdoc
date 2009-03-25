@@ -27,6 +27,7 @@ it looks like:
       :login: rick@email.com
       :password: mypassword
       :image: some_small_32x32_image
+      :ssl: true
       :rooms: 
         First Room: 
           :sticky: rick
@@ -48,6 +49,7 @@ Fixed keywords in the above:
 * :login:
 * :password:
 * :image:
+* :ssl:
 * :rooms:
 * :sticky:
 * :ignore:
@@ -58,6 +60,9 @@ accounts.
 
 The :ignore: is used, on a per-room basis, to just flat out ignore messages
 that match that regexp.
+
+For campfire accounts that are ssl-enabled, you'll need to use the :ssl:
+configuration to specify true for such an account.  The default is false.
 
 The :image: is used for a small 32x32 (or so) image that is used in the
 notification.  This can be done at the account level and/or the room level as

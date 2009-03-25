@@ -55,7 +55,8 @@ account_names.each do |account_name|
   rooms = config[account_name][:rooms]
   account_img = config[account_name][:image]
   if rooms && rooms.size > 0
-    campfire = Tinder::Campfire.new account_name
+    campfire = Tinder::Campfire.new account_name,
+                                    :ssl => config[account_name][:ssl]
     begin
       campfire.login config[account_name][:login], config[account_name][:password]
     rescue Tinder::Error => e
