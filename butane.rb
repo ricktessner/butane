@@ -9,10 +9,14 @@ def monitor_room(room, config = {})
 
   room_name = room.name.gsub /"/, '' # Get rid of any dquotes since we use 'em to delimit person
 
+  last_message_id = 0
   room.listen do |m|
     # Ignore any pings from campfire to determine if I'm still
     # here
     next if m[:person].strip.empty?  # Ignore anything from a nil / empty person
+
+    next if m[:id].to_i <= last_message_id
+    last_message_id = m[:id].to_i
 
     delay = 5000 # in milliseconds (time to display the notification)
 
