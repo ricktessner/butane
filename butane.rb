@@ -3,6 +3,29 @@ require 'rubygems'
 require 'tinder'
 require 'yaml'
 
+def notify(title, message = "", options = {})
+  img_opt = "-i #{options[:image]}" if options[:image]
+  delay_opt = ""
+  if options[:delay]
+    delay_opt = "-t #{options[:delay]}"
+  end
+
+  # Cleanse the message
+  msg = message.dup
+  msg.gsub! /'/, ''       # Get rid of single quotes since we use 'em to delimit msg
+  msg.gsub! '\u003E', '>'
+  msg.gsub! '\u003C', '<'
+  msg.gsub! '\u0026', '&'
+  msg.gsub! '\"', '"'
+  msg.gsub! '&hellip;', '...'   # notify-send don't like this
+
+  # And let's remove all but the href attribute in any anchors
+  # in the msg.  Assumes that in href=stuff, stuff has no whitespace.
+  msg.gsub! /<a[^>]+(href=[^(\s|>)]+)[^>]*>/, '<a \1>'
+
+  `notify-send #{delay_opt} #{img_opt} \"#{title}\" '#{msg}'`
+end
+
 def monitor_room(room, config = {})
   sticky = config[:sticky]
   ignore = config[:ignore]
@@ -31,24 +54,11 @@ def monitor_room(room, config = {})
       next if m[:message] =~ /#{ignore}/
     end
 
-    img_opt = "-i #{config[:image]}" if config[:image]
-
     person = m[:person].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
 
-    msg = m[:message].dup
-    msg.gsub! /'/, ''       # Get rid of single quotes since we use 'em to delimit msg
-    msg.gsub! '\u003E', '>'
-    msg.gsub! '\u003C', '<'
-    msg.gsub! '\u0026', '&'
-    msg.gsub! '\"', '"'
-    msg.gsub! '&hellip;', '...'   # notify-send don't like this
-
-    # And let's remove all but the href attribute in any anchors
-    # in the msg.  Assumes that in href=stuff, stuff has no whitespace.
-    msg.gsub! /<a[^>]+(href=[^(\s|>)]+)[^>]*>/, '<a \1>'
-
-    `notify-send -t #{delay} #{img_opt} \"#{person} in #{room_name}\" '#{msg}'`
+    notify("#{person} in #{room_name}", msg, :delay => delay, :image => config[:image])
   end
+  notify "Stopped monitoring #{room.name} for some reason"
 end
 
 config = YAML::load_file("#{ENV['HOME']}/.butanerc")
@@ -64,24 +74,23 @@ account_names.each do |account_name|
     begin
       campfire.login config[account_name][:login], config[account_name][:password]
     rescue Tinder::Error => e
-      puts "Problem logging in to #{account_name} : #{e.message}"
+      notify "Problem logging in to #{account_name}", "#{e.message}"
       next
     end
-    puts "Connected to #{account_name}"
+    notify "Successfully logged in to #{account_name}", "", :image => account_img
 
     # Start up a thread for each room we are going to monitor
     rooms.keys.each do |room_name|
-      print "  Looking for room #{room_name} ... "
       room = campfire.find_room_by_name room_name
       if room
         room_cfg = rooms[room_name] || {}
         room_cfg[:image] ||= account_img
-        puts "  got it and monitoring."
+        notify "Now monitoring #{room_name}", "", :image => room_cfg[:image]
         threads << Thread.new(room, room_cfg) do |r, cfg|
           monitor_room(r, cfg)
         end
       else
-        puts "  hmmm, didn't find it."
+        notify "Did not find #{room_name}, not monitoring"
       end
     end
   end
