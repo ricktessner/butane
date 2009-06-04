@@ -56,7 +56,7 @@ def monitor_room(room, config = {})
 
     person = m[:person].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
 
-    notify("#{person} in #{room_name}", msg, :delay => delay, :image => config[:image])
+    notify("#{person} in #{room_name}", m[:message], :delay => delay, :image => config[:image])
   end
   notify "Stopped monitoring #{room.name} for some reason"
 end
