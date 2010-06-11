@@ -36,7 +36,7 @@ def monitor_room(room, config = {})
   room.listen do |m|
     # Ignore any pings from campfire to determine if I'm still
     # here
-    next if m[:person].strip.empty?  # Ignore anything from a nil / empty person
+    next if !m[:user] || m[:user][:name].strip.empty?  # Ignore anything from a nil / empty person
 
     next if m[:id].to_i <= last_message_id
     last_message_id = m[:id].to_i
@@ -47,16 +47,16 @@ def monitor_room(room, config = {})
     # delay notification to zero which will leave the message up until
     # clicked away.
     if sticky
-      delay = 0 if m[:message] =~ /#{sticky}/i
+      delay = 0 if m[:body] =~ /#{sticky}/i
     end
 
     if ignore
-      next if m[:message] =~ /#{ignore}/
+      next if m[:body] =~ /#{ignore}/
     end
 
-    person = m[:person].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
+    person = m[:user][:name].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
 
-    notify("#{person} in #{room_name}", m[:message], :delay => delay, :image => config[:image])
+    notify("#{person} in #{room_name}", m[:body], :delay => delay, :image => config[:image])
   end
   notify "Stopped monitoring #{room.name} for some reason"
 end
@@ -69,10 +69,10 @@ account_names.each do |account_name|
   rooms = config[account_name][:rooms]
   account_img = config[account_name][:image]
   if rooms && rooms.size > 0
-    campfire = Tinder::Campfire.new account_name,
-                                    :ssl => config[account_name][:ssl]
     begin
-      campfire.login config[account_name][:login], config[account_name][:password]
+      campfire = Tinder::Campfire.new account_name,
+                                      :username => config[account_name][:username],
+                                      :password => config[account_name][:password]
     rescue Tinder::Error => e
       notify "Problem logging in to #{account_name}", "#{e.message}"
       next
