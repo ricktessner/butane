@@ -72,7 +72,8 @@ account_names.each do |account_name|
     begin
       campfire = Tinder::Campfire.new account_name,
                                       :username => config[account_name][:login],
-                                      :password => config[account_name][:password]
+                                      :password => config[account_name][:password],
+                                      :ssl => config[account_name][:ssl]
     rescue Tinder::Error => e
       notify "Problem logging in to #{account_name}", "#{e.message}"
       next
