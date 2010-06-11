@@ -71,7 +71,7 @@ account_names.each do |account_name|
   if rooms && rooms.size > 0
     begin
       campfire = Tinder::Campfire.new account_name,
-                                      :username => config[account_name][:username],
+                                      :username => config[account_name][:login],
                                       :password => config[account_name][:password]
     rescue Tinder::Error => e
       notify "Problem logging in to #{account_name}", "#{e.message}"
