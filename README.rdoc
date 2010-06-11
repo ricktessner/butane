@@ -7,7 +7,8 @@ systems just fine.
 === Requirements
 
 * Ubuntu 8.04 (or later, I'd assume)
-* the tinder gem (1.2.1):  sudo gem install tinder
+* the tinder gem (1.4.0):  gem install tinder
+* the daemons gem (1.0.10):  gem install tinder
 * libnotify-bin: sudo apt-get install libnotify-bin
 
 I use the Gnome desktop and I'm not sure about the requirements for
