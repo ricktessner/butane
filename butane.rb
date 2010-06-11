@@ -70,10 +70,15 @@ account_names.each do |account_name|
   account_img = config[account_name][:image]
   if rooms && rooms.size > 0
     begin
-      campfire = Tinder::Campfire.new account_name,
-                                      :username => config[account_name][:login],
-                                      :password => config[account_name][:password],
-                                      :ssl => config[account_name][:ssl]
+      auth = { :ssl => config[account_name][:ssl]}
+      if config[account_name][:token]
+        auth.merge!({ :token => config[account_name][:token] })
+      else
+        auth.merge!({ :username => config[account_name][:login],
+                      :password => config[account_name][:password] })
+      end
+
+      campfire = Tinder::Campfire.new(account_name, auth)
     rescue Tinder::Error => e
       notify "Problem logging in to #{account_name}", "#{e.message}"
       next
