@@ -58,7 +58,6 @@ def monitor_room(room, config = {})
 
     notify("#{person} in #{room_name}", m[:body], :delay => delay, :image => config[:image])
   end
-  notify "Stopped monitoring #{room.name} for some reason"
 end
 
 config = YAML::load_file("#{ENV['HOME']}/.butanerc")
