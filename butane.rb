@@ -111,6 +111,7 @@ account_names.each do |account_name|
       if room
         room_configs[room.name] = rooms[room.name] || {}
         room_configs[room.name][:image] ||= account_img
+        room_configs[room.name][:self_name] ||= config[account_name][:self_name]
         tinder_rooms << room
         notify "Now monitoring #{room.name}", "", :image => room_configs[room.name][:image]
       else
@@ -142,7 +143,12 @@ Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
   end
 
   if ignore
-    next if m[:body] =~ /#{ignore}/
+    matched = false
+    ignore.each do |ignore|
+      matched = m[:body] =~ /#{ignore}/
+      break if matched
+    end
+    next if matched
   end
 
   person = m[:user][:name].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
