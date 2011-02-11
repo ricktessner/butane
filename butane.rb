@@ -143,15 +143,14 @@ Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
   end
 
   if ignore
-    matched = false
-    ignore.each do |ignore|
-      matched = m[:body] =~ /#{ignore}/
-      break if matched
+    next if ignore.any? do |ignore|
+      m[:body] =~ /#{ignore}/
     end
-    next if matched
   end
 
-  person = m[:user][:name].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
+  # Get rid of any dquotes since we use 'em to delimit person
+  person = m[:user][:name].gsub /"/, ''
+  next if person.include? room_configs[tinder_room.name][:self_name]
 
   notify("#{person} in #{tinder_room.name}", m[:body], :delay => delay, :image => image)
 end
