@@ -4,6 +4,7 @@ require 'tinder'
 require 'yaml'
 
 def notify(title, message = "", options = {})
+  return if message.nil?
   img_opt = "-i #{options[:image]}" if options[:image]
   delay_opt = ""
   if options[:delay]
