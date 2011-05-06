@@ -28,7 +28,7 @@ module Tinder
             :timeout => 6,
             :ssl => room.send(:connection).options[:ssl]
           }.merge(options)
-          notify "Now monitoring #{room.name}", "" # , :image => room_cfg[:image]
+          notify "Now monitoring #{room.name}"
           room.stream = Twitter::JSONStream.connect(room_options)
           room.stream.each_item do |message|
             message = HashWithIndifferentAccess.new(ActiveSupport::JSON.decode(message))
@@ -75,7 +75,7 @@ def notify(title, message = "", options = {})
   # in the msg.  Assumes that in href=stuff, stuff has no whitespace.
   msg.gsub! /<a[^>]+(href=[^(\s|>)]+)[^>]*>/, '<a \1>'
 
-  `notify-send #{delay_opt} #{img_opt} \\"#{title}\\" '#{msg}'`
+  %x{ notify-send #{delay_opt} #{img_opt} "#{title}" '#{msg}' }
 end
 
 config = YAML::load_file("#{ENV['HOME']}/.butanerc")
