@@ -23,12 +23,28 @@ libnotify-bin above.
 
 === Installation
 
-* Install rvm and then +rvm install ruby-1.9.2+
-* git clone git://github.com/ricktessner/butane.git
-* cd butane
-* rvm gemset create butane  # There is a .rvmrc provided with butane
-* gem install bundler
-* bundle install
+Install rvm.  See http://beginrescueend.com
+
+Install ruby 1.9.2
+
+  rvm install ruby-1.9.2
+
+Grab the butane source from github
+
+  git clone git://github.com/ricktessner/butane.git
+  cd butane
+
+Create the butane gemset with rvm.  A .rvmrc is part of the butane repo.
+
+  rvm gemset create butane
+
+Install the bundler gem.  This is needed to install all the other required gems as listed in Gemfile.lock
+
+  gem install bundler
+
+Install the required gems for butane
+
+  bundle install
 
 === Configuration of the .butanerc
 
@@ -95,15 +111,24 @@ will again cause a sticky notification to appear.
 
 === Run it
 
-+butane start+ to start butane as a daemon.
+Starting butane as a daemon
 
-+butane run+ to start it attached to the console.
+  butane start
 
-+butane restart+ will stop and restart the butane daemon.
+Run butane attached to the console. This is useful for debugging purposes.
+Exceptions will appear on the console and give hints as to what's going wrong.
 
-+butane stop+ to stop butane.
+  butane run
 
-+butane status+ to determine wether butane is running.
+Restart the butane daemon
 
-Using +butane run+ is useful since it will show you on the console the accounts
-butane is trying to connect to and the rooms it will be monitoring.
+  butane restart
+
+Stop the butane daemon
+
+  butane stop
+
+Status of the butane daemon
+
+  butane status
+
