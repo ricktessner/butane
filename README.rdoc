@@ -4,21 +4,36 @@ A nod to the Propane for mac which monitors Campfire rooms.  This is for Linux
 users.  It has been tested on Ubuntu 8.10 and should work on Debian based
 systems just fine.
 
+It should be noted that butane is monitor only.  Propane allows you to reply to
+in addition to monitoring campfire rooms.
+
 === Requirements
 
+* Ruby 1.9.2 -- Strongly recommend using RVM.  See http://beginrescueend.com/ for details.  Really, it's worth it!
 * Ubuntu 8.04 (or later, I'd assume)
-* the tinder gem (1.4.0):  gem install tinder
-* the daemons gem (1.0.10):  gem install tinder
-* libnotify-bin: sudo apt-get install libnotify-bin
+* bundler gem
 
 I use the Gnome desktop and I'm not sure about the requirements for
 libnotify-bin above.
 
-=== To Dos
+=== TODO
 
-* Package as a gem although it is pretty specific to linux and possibly the gnome desktop as well.
+* Handle token based login
+* Ability to reply.  The tinder gem does provide that but butane does not yet make use of it.
+
+=== Installation
+
+* Install rvm and then +rvm install ruby-1.9.2+
+* git clone git://github.com/ricktessner/butane.git
+* cd butane
+* rvm gemset create butane  # There is a .rvmrc provided with butane
+* gem install bundler
+* bundle install
 
 === Configuration of the .butanerc
+
+Only login + password authentication can currently be used with butane.  On the
+TODO list is adding authentication with the campfire token.
 
 Create a .butanerc in your home directory.  It's in yaml format and here's what
 it looks like:
