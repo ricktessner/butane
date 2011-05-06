@@ -76,8 +76,6 @@ def notify(title, message = "", options = {})
   msg.gsub! /<a[^>]+(href=[^(\s|>)]+)[^>]*>/, '<a \1>'
 
   `notify-send #{delay_opt} #{img_opt} \\"#{title}\\" '#{msg}'`
-  puts "title: #{title}"
-  puts "msg: #{msg}"
 end
 
 config = YAML::load_file("#{ENV['HOME']}/.butanerc")
