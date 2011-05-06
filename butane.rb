@@ -28,7 +28,6 @@ module Tinder
             :timeout => 6,
             :ssl => room.send(:connection).options[:ssl]
           }.merge(options)
-          notify "Now monitoring #{room.name}"
           room.stream = Twitter::JSONStream.connect(room_options)
           room.stream.each_item do |message|
             message = HashWithIndifferentAccess.new(ActiveSupport::JSON.decode(message))
@@ -113,6 +112,7 @@ account_names.each do |account_name|
         room_configs[room.name] = rooms[room.name] || {}
         room_configs[room.name][:image] ||= account_img
         tinder_rooms << room
+        notify "Now monitoring #{room.name}", "", :image => room_configs[room.name][:image]
       else
         notify "Did not find #{room_name}, not monitoring"
       end
