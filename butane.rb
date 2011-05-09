@@ -41,11 +41,11 @@ module Tinder
           end
 
           room.stream.on_max_reconnects do |timeout, retries|
-            raise ListenFailed.new("Tried #{retries} times to connect. Got disconnected from #{@name}!")
+            raise ListenFailed.new("Tried #{retries} times to connect. Got disconnected from #{room.name}!")
           end
 
           # if we really get disconnected
-          raise ListenFailed.new("got disconnected from #{@name}!") if !EventMachine.reactor_running?
+          raise ListenFailed.new("got disconnected from #{room.name}!") if !EventMachine.reactor_running?
         end
       end
     end
