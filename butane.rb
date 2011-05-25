@@ -111,6 +111,7 @@ account_names.each do |account_name|
       if room
         room_configs[room.name] = rooms[room.name] || {}
         room_configs[room.name][:image] ||= account_img
+        room_configs[room.name][:self_name] ||= config[account_name][:self_name]
         tinder_rooms << room
         notify "Now monitoring #{room.name}", "", :image => room_configs[room.name][:image]
       else
@@ -133,6 +134,7 @@ Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
   sticky = room_configs[tinder_room.name][:sticky]
   ignore = room_configs[tinder_room.name][:ignore]
   image  = room_configs[tinder_room.name][:image]
+  self_name = room_configs[tinder_room.name][:self_name]
 
   # If we're to monitor something in particular in this room, set the
   # delay notification to zero which will leave the message up until
@@ -142,10 +144,15 @@ Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
   end
 
   if ignore
-    next if m[:body] =~ /#{ignore}/
+    ignore = [ignore].flatten
+    next if ignore.any? do |ignore|
+      m[:body] =~ /#{ignore}/
+    end
   end
 
-  person = m[:user][:name].gsub /"/, ''  # Get rid of any dquotes since we use 'em to delimit person
+  # Get rid of any dquotes since we use 'em to delimit person
+  person = m[:user][:name].gsub /"/, ''
+  next if self_name and person.include? self_name
 
   notify("#{person} in #{tinder_room.name}", m[:body], :delay => delay, :image => image)
 end
