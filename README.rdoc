@@ -85,6 +85,7 @@ Fixed keywords in the above:
 * :rooms:
 * :sticky:
 * :ignore:
+* :self_name:
 
 The rest of the items, "mycampfire", "otheraccount", "First Room" and "Git
 Commits", "Light is Nice" are the names of your accounts and rooms in those
@@ -95,6 +96,9 @@ that match that regexp.
 
 For campfire accounts that are ssl-enabled, you'll need to use the :ssl:
 configuration to specify true for such an account.  The default is false.
+
+The :self_name: attribute is a per-account setting that should be your full name
+in the account - your own messages will be filtered out.
 
 The :image: is used for a small 32x32 (or so) image that is used in the
 notification.  This can be done at the account level and/or the room level as
