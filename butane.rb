@@ -144,6 +144,7 @@ Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
   end
 
   if ignore
+    ignore = [ignore].flatten
     next if ignore.any? do |ignore|
       m[:body] =~ /#{ignore}/
     end
