@@ -30,9 +30,10 @@ module Tinder
           }.merge(options)
           room.stream = Twitter::JSONStream.connect(room_options)
           room.stream.each_item do |message|
-            message = HashWithIndifferentAccess.new(ActiveSupport::JSON.decode(message))
-            message[:user] = room.user(message.delete(:user_id))
-            message[:created_at] = Time.parse(message[:created_at])
+
+            message = ActiveSupport::JSON.decode(message)
+            message['user'] = room.user(message.delete('user_id'))
+            message['created_at'] = Time.parse(message['created_at'])
             yield(room, message)
           end
 
@@ -124,10 +125,10 @@ end
 last_message_id = Hash.new(0)
 
 Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
-  next if !m[:user] || m[:user][:name].strip.empty?  # Ignore anything from a nil / empty person
+  next if !m['user'] || m['user'].name.strip.empty?  # Ignore anything from a nil / empty person
 
-  next if m[:id].to_i <= last_message_id[tinder_room.id]
-  last_message_id[tinder_room.id] = m[:id].to_i
+  next if m['id'] <= last_message_id[tinder_room.id]
+  last_message_id[tinder_room.id] = m['id']
 
   delay = 5000 # in milliseconds (time to display the notification)
 
@@ -140,19 +141,19 @@ Tinder::Room.listen_to_rooms(tinder_rooms) do |tinder_room, m|
   # delay notification to zero which will leave the message up until
   # clicked away.
   if sticky
-    delay = 0 if m[:body] =~ /#{sticky}/i
+    delay = 0 if m['body'] =~ /#{sticky}/i
   end
 
   if ignore
     ignore = [ignore].flatten
     next if ignore.any? do |ignore|
-      m[:body] =~ /#{ignore}/
+      m['body'] =~ /#{ignore}/
     end
   end
 
   # Get rid of any dquotes since we use 'em to delimit person
-  person = m[:user][:name].gsub /"/, ''
+  person = m['user'].name.gsub /"/, ''
   next if self_name and person.include? self_name
 
-  notify("#{person} in #{tinder_room.name}", m[:body], :delay => delay, :image => image)
+  notify("#{person} in #{tinder_room.name}", m['body'], :delay => delay, :image => image)
 end
