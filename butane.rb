@@ -31,7 +31,7 @@ module Tinder
           room.stream = Twitter::JSONStream.connect(room_options)
           room.stream.each_item do |message|
 
-            message = ActiveSupport::JSON.decode(message)
+            message = JSON.parse(message)
             message['user'] = room.user(message.delete('user_id'))
             message['created_at'] = Time.parse(message['created_at'])
             yield(room, message)
